@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% load draw_menu %}
+
+{% block content %}
+    <h2>{{ name }}</h2>
+    <nav>{% draw_menu "Games" %}</nav>
+
+{% endblock %}
