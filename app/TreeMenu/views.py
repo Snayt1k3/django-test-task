@@ -4,5 +4,5 @@ from django.shortcuts import render
 # Create your views here.
 
 
-def base(request, name):
-    return render(request, 'home.html', {'name': name})
+class BaseView(TemplateView):
+    template_name = 'home.html'
