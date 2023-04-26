@@ -1,11 +1,7 @@
 from TreeMenu.models import TreeMenu
-import re
-
 from django import template
 from django.http import HttpRequest
-from django.template import RequestContext
-from django.urls import reverse, NoReverseMatch
-
+from django.shortcuts import reverse, NoReverseMatch
 
 register = template.Library()
 
@@ -15,8 +11,6 @@ def draw_menu(context, name: str = '', parent: int = 0):
     if parent != 0 and 'menu' in context:
         menu = context['menu']
     else:
-
-        is_url = re.compile(r'^http[s]?://')
 
         # Get path if request exist
         current_path = context['request'].path \
@@ -31,26 +25,17 @@ def draw_menu(context, name: str = '', parent: int = 0):
 
         for item in data:
 
-            path = item.path.strip()
-
-            target = '_self'
-
-            if is_url.match(path):
-                url = path
-                target = '_blank'
-            else:
-                try:
-                    url = reverse(path)
-                except NoReverseMatch:
-                    url = path
+            try:
+                url = reverse(item.path)
+            except NoReverseMatch:
+                url = item.path
 
             menu.append({
                 'id': item.pk,
                 'url': url,
-                'target': target,
                 'name': item.name,
                 'parent': item.parent_id or 0,
-                'active': True if url == current_path else False,
+                'active': True if url == current_path or current_path.rstrip('/') == url else False,
             })
 
     return {

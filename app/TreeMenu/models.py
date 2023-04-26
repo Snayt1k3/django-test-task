@@ -31,7 +31,7 @@ class TreeMenu(models.Model):
         blank=False,
         null=False
     )
-    path = models.CharField('Link', max_length=1000, blank=True, null=False)
+    path = models.CharField('Link or Named Url', max_length=1000, blank=True, null=False)
 
     parent = models.ForeignKey(
         'self',
